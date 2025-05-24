@@ -1,0 +1,22 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.akdev.step_logger">
+  <!-- Required for step counting -->
+  <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+  <!-- Required for foreground service -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+  <!-- Required for notifications -->
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+  <!-- Optional: For keeping device awake during tracking -->
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+  <application>
+    <service
+      android:name="com.akdev.step_logger.StepTrackerService"
+      android:enabled="true"
+      android:exported="false"
+      android:foregroundServiceType="health" />
+  </application>
+</manifest>
