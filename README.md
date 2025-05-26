@@ -1,74 +1,50 @@
-Flutter Step Tracker Plugin (Android)
-A robust step tracking plugin with background service support for Android.
+# Step Logger 🚶‍♂️
 
-Installation
-Add to pubspec.yaml:
+![Version](https://img.shields.io/badge/pub-v1.0.0--beta.1-blue)
 
-yaml
-dependencies:
-  step_tracker_plugin: ^1.0.0
+A Flutter plugin for logging step data (Android)
 
-#Android Setup
+## Features
 
-Add to AndroidManifest.xml:
+- 📊 Real-time step counting
+- 🔄 Background service for continuous tracking (Android)
+- ⏱️ Session-based step analytics
+- 📅 Historical session data storage
+- 🔔 Customizable background notification
+- 📱 Works with both foreground and background apps
+
+## Android Permissions ⚙️
+
+Add these to `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<!-- Core permissions -->
 <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
 
-<service
-    android:name="com.example.step_tracker_plugin.StepTrackerService"
-    android:foregroundServiceType="health"
-    android:exported="false"/>
+<!-- Background service enhancements -->
+<uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-Set minSdkVersion 21 in app/build.gradle
+<!-- For Android 9+ background execution -->
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
+```
 
-Usage
+## Service declaration
 
-// Initialize
-await StepTrackerPlugin.initialize();
+```xml
+##
+   <service
+      android:name="com.transistorsoft.flutter.backgroundfetch.BackgroundFetchService"
+      android:permission="android.permission.BIND_JOB_SERVICE"
+      android:exported="true" />
 
-// Start tracking
-await StepTrackerPlugin.startStepTracking();
+   <service
+      android:name="id.flutter.flutter_background_service.BackgroundService"
+      android:foregroundServiceType="health"/>
 
-// Get steps
-int steps = await StepTrackerPlugin.getTotalSteps();
-
-// Stream updates
-StepTrackerPlugin.stepUpdates.listen((update) {
-  print('Steps: ${update.totalSteps}');
-});
-
-// Stop tracking
-await StepTrackerPlugin.stopStepTracking();
-Required Permissions
-Request these at runtime:
-
-
-await [
-  Permission.activityRecognition,
-  Permission.notification,
-].request();
-
-Features
-Background step counting
-
-Battery-efficient implementation
-
-Session tracking
-
-Foreground service support
-
-Works when app is closed
-
-Troubleshooting
-Ensure permissions are granted
-
-Disable battery optimization for your app
-
-Test on physical device
-
-Check Logcat for errors
-
-For full example see example/ directory.
-
+  <service
+      android:name="com.your.example.ForegroundService"
+      android:enabled="true"
+      android:exported="false" />                  
+```
