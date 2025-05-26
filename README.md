@@ -33,13 +33,12 @@ Add these to `android/app/src/main/AndroidManifest.xml`:
 ## Service declaration
 
 ```xml
-##
-   <service
+  <service
       android:name="com.transistorsoft.flutter.backgroundfetch.BackgroundFetchService"
       android:permission="android.permission.BIND_JOB_SERVICE"
       android:exported="true" />
 
-   <service
+  <service
       android:name="id.flutter.flutter_background_service.BackgroundService"
       android:foregroundServiceType="health"/>
 
