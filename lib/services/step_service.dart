@@ -16,7 +16,7 @@ class StepService extends StepTrackerPlatform {
   late SharedPreferences _prefs;
   late StepLoggerConfig _config;
 
-  late StreamSubscription<StepCount> _stepCountStream;
+  StreamSubscription<StepCount>? _stepCountStream;
   int _totalSteps = 0;
   int _sessionSteps = 0;
   int _initialSteps = -1;
@@ -63,6 +63,19 @@ class StepService extends StepTrackerPlatform {
   @override
   Future<bool> startStepTracking() async {
     if (_isTracking) return true;
+    bool permissionsGranted = false;
+    try {
+      permissionsGranted = await Permission.activityRecognition.isGranted &&
+          await Permission.notification.isGranted;
+      await Permission.ignoreBatteryOptimizations.isGranted;
+    } catch (e) {
+      debugPrint('Error checking permissions: $e');
+    }
+
+    if (!permissionsGranted) {
+      debugPrint('Permissions not granted. Cannot start tracking.');
+      return false;
+    }
 
     try {
       await _prefs.setBool('isTracking', true);
@@ -73,8 +86,10 @@ class StepService extends StepTrackerPlatform {
       _initialSteps = -1;
       _sessionSteps = 0;
 
-      _stepCountStream = Pedometer.stepCountStream.listen(_handleStepCount);
-
+      _stepCountStream ??= Pedometer.stepCountStream.listen(_handleStepCount);
+      _stepCountStream?.onError((error) {
+        debugPrint('Error in step count stream: $error');
+      });
       await BackgroundService.start(
         _config,
       );
@@ -119,7 +134,8 @@ class StepService extends StepTrackerPlatform {
       await _prefs.setInt('initialSteps', -1);
       await _prefs.setInt('sessionSteps', 0);
 
-      await _stepCountStream.cancel();
+      await _stepCountStream?.cancel();
+      _stepCountStream = null;
       await BackgroundService.stop();
       await NotificationUtils.cancelNotification();
 
@@ -181,6 +197,14 @@ class StepService extends StepTrackerPlatform {
     _emitUpdate();
   }
 
+  /// Loads persisted data from shared preferences into the service.
+  ///
+  /// This method retrieves and sets the tracking state, total steps, session
+  /// steps, and initial steps from shared preferences. It also loads any
+  /// persisted step sessions, attempting to parse them as JSON. If parsing
+  /// fails due to improper formatting, it attempts a fallback parsing method.
+  /// Successfully parsed sessions are added to the internal session list.
+  /// Errors during parsing are logged and the session is skipped.
   Future<void> _loadPersistedData() async {
     _isTracking = _prefs.getBool('isTracking') ?? false;
     _totalSteps = _prefs.getInt('currentSteps') ?? 0;
@@ -189,13 +213,25 @@ class StepService extends StepTrackerPlatform {
 
     final sessions = _prefs.getStringList('sessions') ?? [];
     _sessions.clear();
+
     for (var session in sessions) {
       try {
-        _sessions.add(
-          StepSession.fromMap(Map<String, dynamic>.from(jsonDecode(session))),
-        );
+        final decoded = jsonDecode(session);
+        _sessions.add(StepSession.fromMap(Map<String, dynamic>.from(decoded)));
       } catch (e) {
-        debugPrint('Error parsing session: $e');
+        try {
+          // Fallback for improperly stored sessions
+          final fixedSession = session
+              .replaceAll('{', '{"')
+              .replaceAll('}', '"}')
+              .replaceAll(': ', '": "')
+              .replaceAll(', ', '", "');
+          final decoded = jsonDecode(fixedSession);
+          _sessions
+              .add(StepSession.fromMap(Map<String, dynamic>.from(decoded)));
+        } catch (e) {
+          debugPrint('Error parsing session (skipping): $session');
+        }
       }
     }
   }
@@ -203,7 +239,7 @@ class StepService extends StepTrackerPlatform {
   Future<void> _saveSessions() async {
     await _prefs.setStringList(
       'sessions',
-      _sessions.map((s) => s.toMap().toString()).toList(),
+      _sessions.map((s) => jsonEncode(s.toMap())).toList(),
     );
   }
 
@@ -214,6 +250,10 @@ class StepService extends StepTrackerPlatform {
 
     if (await Permission.notification.isDenied) {
       await Permission.notification.request();
+    }
+
+    if (await Permission.ignoreBatteryOptimizations.isDenied) {
+      await Permission.ignoreBatteryOptimizations.request();
     }
   }
 

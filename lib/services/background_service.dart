@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:pedometer/pedometer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_logger/models/step_logger_config.dart';
 
@@ -92,6 +94,7 @@ class BackgroundService {
   ///
   /// sets the foreground notification title and content. It also listens
   /// for the 'stopService' event and stops the service when it is received.
+  
   @pragma('vm:entry-point')
   static void onStart(ServiceInstance service) async {
     final prefs = await SharedPreferences.getInstance();
@@ -116,7 +119,27 @@ class BackgroundService {
       service.setForegroundNotificationInfo(title: title, content: content);
     }
 
+    // Add step tracking in background
+    StreamSubscription<StepCount>? stepSubscription;
+
+    try {
+      stepSubscription = Pedometer.stepCountStream.listen((event) {
+        // Update shared preferences with latest step count
+        prefs.setInt('currentSteps', event.steps);
+
+        // Calculate session steps if initial steps are set
+        final initialSteps = prefs.getInt('initialSteps') ?? -1;
+        if (initialSteps != -1) {
+          final sessionSteps = event.steps - initialSteps;
+          prefs.setInt('sessionSteps', sessionSteps);
+        }
+      });
+    } catch (e) {
+      debugPrint('Error initializing step tracking in background: $e');
+    }
+
     service.on('stopService').listen((event) {
+      stepSubscription?.cancel();
       service.stopSelf();
     });
   }
