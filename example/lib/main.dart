@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:step_logger/models/step_logger_config.dart';
 import 'package:step_logger/models/step_session.dart';
 import 'package:step_logger/step_logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await StepTrackerPlugin.initialize();
+
+  // Initialize the StepTrackerPlugin with configuration
+
+  await StepTrackerPlugin.initialize(
+    config: const StepLoggerConfig(
+      androidNotificationTitle: 'My Example Step Tracker',
+      androidNotificationContent: 'Tracking your steps in the background',
+      //Note: Every Notifications can be removed in Android 14+ by the user
+    ),
+  );
 
   runApp(const MyApp());
 }
@@ -27,10 +37,10 @@ class StepTrackerScreen extends StatefulWidget {
   const StepTrackerScreen({super.key});
 
   @override
-  _StepTrackerScreenState createState() => _StepTrackerScreenState();
+  StepTrackerScreenState createState() => StepTrackerScreenState();
 }
 
-class _StepTrackerScreenState extends State<StepTrackerScreen> {
+class StepTrackerScreenState extends State<StepTrackerScreen> {
   int _totalSteps = 0;
   int _sessionSteps = 0;
   bool _isTracking = false;

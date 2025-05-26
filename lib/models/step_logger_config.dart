@@ -1,8 +1,8 @@
-class NotificationConfig {
+class StepLoggerConfig {
   final String? androidNotificationTitle;
   final String? androidNotificationContent;
 
-  NotificationConfig({
+  const StepLoggerConfig({
     this.androidNotificationTitle,
     this.androidNotificationContent,
   });

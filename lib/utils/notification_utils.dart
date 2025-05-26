@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationUtils {
@@ -41,12 +43,23 @@ class NotificationUtils {
         'step_tracker_channel',
         androidNotificationTitle ?? 'Step Tracker',
         channelDescription: androidNotificationContent ?? 'Tracking your steps',
-        usesChronometer: true,
-        importance: Importance.high,
-        priority: Priority.high,
+        importance: Importance.max,
+        priority: Priority.max,
         ongoing: true,
+        autoCancel: false,
+        enableVibration: true,
+        playSound: false,
+        visibility: NotificationVisibility.public,
+        // Critical for non-dismissable notifications:
+        channelShowBadge: false,
+        fullScreenIntent: true, // Makes it more persistent
+        timeoutAfter: null, // Never times out
+        showWhen: false,
+        when: null,
+        additionalFlags: Int32List.fromList([
+          1 << 2, // FLAG_NO_CLEAR - This is crucial
+        ]),
       );
-
       await _notifications.show(
         1,
         'Step Tracker Active',

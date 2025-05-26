@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:step_logger/models/step_logger_config.dart';
 import 'package:step_logger/models/step_session.dart';
 import 'package:step_logger/services/background_service.dart';
 import 'package:step_logger/step_logger.dart';
@@ -13,6 +14,8 @@ class StepService extends StepTrackerPlatform {
   final StreamController<StepUpdate> _stepUpdateController =
       StreamController<StepUpdate>.broadcast();
   late SharedPreferences _prefs;
+  late StepLoggerConfig _config;
+
   late StreamSubscription<StepCount> _stepCountStream;
   int _totalSteps = 0;
   int _sessionSteps = 0;
@@ -20,23 +23,22 @@ class StepService extends StepTrackerPlatform {
   bool _isTracking = false;
   final List<StepSession> _sessions = [];
 
-  @override
-
   /// Initializes the StepService by setting up shared preferences,
   /// initializing notifications, loading persisted data, and checking permissions.
   ///
   /// Returns `true` if initialization is successful, or `false` if an error occurs.
-
-  Future<bool> initialize({
-    final String? initialNotificationTitle,
-  }) async {
+  @override
+  Future<bool> initialize({StepLoggerConfig? config}) async {
     try {
+      _config = config ?? const StepLoggerConfig();
       _prefs = await SharedPreferences.getInstance();
+
       await NotificationUtils.initialize(
-        initialNotificationTitle: initialNotificationTitle,
+        initialNotificationTitle: _config.androidNotificationTitle,
       );
       await _loadPersistedData();
       await _checkPermissions();
+
       return true;
     } catch (e) {
       debugPrint('StepTracker initialization error: $e');
@@ -72,11 +74,14 @@ class StepService extends StepTrackerPlatform {
       _sessionSteps = 0;
 
       _stepCountStream = Pedometer.stepCountStream.listen(_handleStepCount);
-      await BackgroundService.start();
+
+      await BackgroundService.start(
+        _config,
+      );
 
       await NotificationUtils.showTrackingNotification(
-        // androidNotificationTitle: androidNotificationTitle,
-        // androidNotificationContent: androidNotificationContent,
+        androidNotificationTitle: _config.androidNotificationTitle,
+        androidNotificationContent: _config.androidNotificationContent,
       );
       _emitUpdate();
       return true;
@@ -154,7 +159,7 @@ class StepService extends StepTrackerPlatform {
 
   @override
   Future<bool> startBackgroundService() async =>
-      await BackgroundService.start();
+      await BackgroundService.start(_config);
 
   @override
   Future<bool> stopBackgroundService() async => await BackgroundService.stop();

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:step_logger/models/step_logger_config.dart';
 import 'package:step_logger/models/step_session.dart';
 import 'package:step_logger/services/step_service.dart';
 
@@ -14,8 +15,9 @@ abstract class StepTrackerPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  Future<bool> initialize({StepLoggerConfig? config});
+
   // Step tracking methods
-  Future<bool> initialize();
   Future<bool> startStepTracking();
   Future<bool> stopStepTracking();
   Future<bool> isTracking();
@@ -35,7 +37,8 @@ abstract class StepTrackerPlatform extends PlatformInterface {
 
 class StepTrackerPlugin {
   /// Initializes the step tracker plugin
-  static Future<bool> initialize() => StepTrackerPlatform.instance.initialize();
+  static Future<bool> initialize({StepLoggerConfig? config}) =>
+      StepTrackerPlatform.instance.initialize(config: config);
 
   /// Starts step tracking session
   static Future<bool> startStepTracking() =>
