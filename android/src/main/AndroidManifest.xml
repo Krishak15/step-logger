@@ -1,16 +1,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.akdev.step_logger">
-  <!-- Required for step counting -->
+
+  <!-- Permission to recognize physical activity -->
   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
-  <!-- Required for foreground service -->
+  <!-- Permission to run a foreground service -->
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-  <!-- Required for notifications -->
+  <!-- Permission for foreground service data synchronization -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+  <!-- Permission to acquire a wake lock to keep the CPU running -->
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+  <!-- Permission to receive a broadcast when the device finishes booting -->
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+  <!-- Permission to post notifications -->
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-  <!-- Optional: For keeping device awake during tracking -->
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <!-- Permission to request ignoring battery optimizations -->
+  <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+  <!-- Permission to access body sensors like step counters -->
+  <uses-permission android:name="android.permission.BODY_SENSORS" />
 
   <application>
     <service
@@ -18,5 +31,10 @@
       android:enabled="true"
       android:exported="false"
       android:foregroundServiceType="health" />
+      
+    <service
+      android:name="id.flutter.flutter_background_service.BackgroundService"
+      android:foregroundServiceType="health"
+    />
   </application>
 </manifest>
