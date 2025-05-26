@@ -73,6 +73,7 @@ class StepService extends StepTrackerPlatform {
     }
 
     if (!permissionsGranted) {
+      await _checkPermissions();
       debugPrint('Permissions not granted. Cannot start tracking.');
       return false;
     }
