@@ -8,7 +8,7 @@ void main() async {
 
   // Initialize the StepTrackerPlugin with configuration
 
-  await StepTrackerPlugin.initialize(
+  await StepLogger.initialize(
     config: const StepLoggerConfig(
       androidNotificationTitle: 'My Example Step Tracker',
       androidNotificationContent: 'Tracking your steps in the background',
@@ -53,14 +53,14 @@ class StepTrackerScreenState extends State<StepTrackerScreen> {
   }
 
   Future<void> _loadInitialData() async {
-    _totalSteps = await StepTrackerPlugin.getTotalSteps();
-    _sessionSteps = await StepTrackerPlugin.getSessionSteps();
-    _isTracking = await StepTrackerPlugin.isTracking();
+    _totalSteps = await StepLogger.getTotalSteps();
+    _sessionSteps = await StepLogger.getSessionSteps();
+    _isTracking = await StepLogger.isTracking();
     setState(() {});
   }
 
   void _setupListeners() {
-    StepTrackerPlugin.stepUpdates.listen((update) {
+    StepLogger.stepUpdates.listen((update) {
       setState(() {
         _totalSteps = update.totalSteps;
         _sessionSteps = update.sessionSteps;
@@ -71,18 +71,18 @@ class StepTrackerScreenState extends State<StepTrackerScreen> {
 
   @override
   void dispose() {
-    StepTrackerPlugin.stopStepTracking();
+    StepLogger.stopStepTracking();
     super.dispose();
   }
 
   Future<List<StepSession>> _loadSessionHistory() async {
-    final sessions = await StepTrackerPlugin.getSessionHistory();
+    final sessions = await StepLogger.getSessionHistory();
     // Handle session history data
     return sessions;
   }
 
   void _clearSessionHistory() async {
-    await StepTrackerPlugin.clearSessionHistory();
+    await StepLogger.clearSessionHistory();
     setState(() {});
   }
 
@@ -99,11 +99,11 @@ class StepTrackerScreenState extends State<StepTrackerScreen> {
           const SizedBox(height: 20),
           _isTracking
               ? ElevatedButton(
-                  onPressed: () => StepTrackerPlugin.stopStepTracking(),
+                  onPressed: () => StepLogger.stopStepTracking(),
                   child: const Text('Stop Tracking'),
                 )
               : ElevatedButton(
-                  onPressed: () => StepTrackerPlugin.startStepTracking(),
+                  onPressed: () => StepLogger.startStepTracking(),
                   child: const Text('Start Tracking'),
                 ),
           const SizedBox(
@@ -115,7 +115,7 @@ class StepTrackerScreenState extends State<StepTrackerScreen> {
           ),
           const SizedBox(height: 20),
           FutureBuilder(
-              future: StepTrackerPlugin.isBackgroundServiceRunning(),
+              future: StepLogger.isBackgroundServiceRunning(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   final isRunning = snapshot.data ?? false;

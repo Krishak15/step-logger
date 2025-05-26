@@ -35,7 +35,7 @@ abstract class StepTrackerPlatform extends PlatformInterface {
   Future<bool> stopBackgroundService();
 }
 
-class StepTrackerPlugin {
+class StepLogger {
   /// Initializes the step tracker plugin
   static Future<bool> initialize({StepLoggerConfig? config}) =>
       StepTrackerPlatform.instance.initialize(config: config);
