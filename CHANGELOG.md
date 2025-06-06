@@ -5,7 +5,7 @@
 - Included persistent session tracking and background step detection.
 - Improved Android service management and foreground notification handling.
 
-## 1.0.1-beta.2
+## 1.0.0-beta.2
 
 - Added Support for iOS
 
