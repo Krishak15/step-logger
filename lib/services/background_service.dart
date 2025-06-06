@@ -38,9 +38,9 @@ class BackgroundService {
           isForegroundMode: true,
           notificationChannelId: 'step_tracker_channel',
           initialNotificationTitle:
-              config.androidNotificationTitle ?? 'Step Tracker',
+              config.trackingNotificationTitle ?? 'Step Tracker',
           initialNotificationContent:
-              config.androidNotificationContent ?? 'Tracking your steps',
+              config.trackingNotificationContent ?? 'Tracking your steps',
           foregroundServiceNotificationId: 1,
         ),
         iosConfiguration: IosConfiguration(),
@@ -50,8 +50,8 @@ class BackgroundService {
       await prefs.setString(
           'bg_service_config',
           jsonEncode({
-            'title': config.androidNotificationTitle,
-            'content': config.androidNotificationContent,
+            'title': config.trackingNotificationTitle,
+            'content': config.trackingNotificationContent,
           }));
       return true;
     } catch (e) {
@@ -94,7 +94,7 @@ class BackgroundService {
   ///
   /// sets the foreground notification title and content. It also listens
   /// for the 'stopService' event and stops the service when it is received.
-  
+
   @pragma('vm:entry-point')
   static void onStart(ServiceInstance service) async {
     final prefs = await SharedPreferences.getInstance();

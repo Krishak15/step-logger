@@ -1,6 +1,6 @@
 name: step_logger
-description: "A Flutter plugin for step counting and log sessions with background service support for Android."
-version: 1.0.0-beta.1
+description: "A Flutter plugin for step counting and log sessions with background service support for Android and iOS."
+version: 1.0.1-beta.2
 repository: https://github.com/Krishak15/step-logger
 
 environment:
@@ -18,6 +18,7 @@ dependencies:
   shared_preferences: ^2.2.3
   dependency_validator: ^4.1.3
   intl: ^0.20.2
+  health: ^12.2.0
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +40,8 @@ flutter:
     platforms:
       android:
         package: com.akdev.step_logger
+        pluginClass: StepLoggerPlugin
+      ios:
         pluginClass: StepLoggerPlugin
 
   # To add assets to your plugin package, add an assets section, like this:

@@ -7,13 +7,15 @@ class NotificationUtils {
 
   static Future<bool> initialize({
     final String? initialNotificationTitle,
+    final String? androidNotificationIcon,
   }) async {
     try {
-      const AndroidInitializationSettings initializationSettingsAndroid =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings initializationSettingsAndroid =
+          AndroidInitializationSettings(
+              androidNotificationIcon ?? '@mipmap/ic_launcher');
 
       await _notifications.initialize(
-        const InitializationSettings(android: initializationSettingsAndroid),
+        InitializationSettings(android: initializationSettingsAndroid),
       );
 
       AndroidNotificationChannel channel = AndroidNotificationChannel(

@@ -1,0 +1,71 @@
+PODS:
+  - device_info_plus (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_background_service_ios (0.0.3):
+    - Flutter
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - health (12.2.0):
+    - Flutter
+  - integration_test (0.0.1):
+    - Flutter
+  - pedometer (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.3.0):
+    - Flutter
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - step_logger (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_background_service_ios (from `.symlinks/plugins/flutter_background_service_ios/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - health (from `.symlinks/plugins/health/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - pedometer (from `.symlinks/plugins/pedometer/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - step_logger (from `.symlinks/plugins/step_logger/ios`)
+
+EXTERNAL SOURCES:
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
+  Flutter:
+    :path: Flutter
+  flutter_background_service_ios:
+    :path: ".symlinks/plugins/flutter_background_service_ios/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  health:
+    :path: ".symlinks/plugins/health/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+  pedometer:
+    :path: ".symlinks/plugins/pedometer/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  step_logger:
+    :path: ".symlinks/plugins/step_logger/ios"
+
+SPEC CHECKSUMS:
+  device_info_plus: 71ffc6ab7634ade6267c7a93088ed7e4f74e5896
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_background_service_ios: 00d31bdff7b4bfe06d32375df358abe0329cf87e
+  flutter_local_notifications: 395056b3175ba4f08480a7c5de30cd36d69827e4
+  health: 5f06d2b77cede1909be85dcd588570668caa5be2
+  integration_test: 2d03ab552da9a1f408709a6acf3d7ca4cb3cb307
+  pedometer: 1c5eaab0c6bce8eb7651f7095553b5081c9d06ed
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  step_logger: 0f39686933c8dc75bb53bf92a942f6d0f494105e
+
+PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
+
+COCOAPODS: 1.16.2
