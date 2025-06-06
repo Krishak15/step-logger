@@ -1,6 +1,6 @@
 name: step_logger
 description: "A Flutter plugin for step counting and log sessions with background service support for Android and iOS."
-version: 1.0.1-beta.2
+version: 1.0.0-beta.2
 repository: https://github.com/Krishak15/step-logger
 
 environment:

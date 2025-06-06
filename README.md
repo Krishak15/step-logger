@@ -1,6 +1,6 @@
 # Step Logger 🚶‍♂️
 
-![Version](https://img.shields.io/badge/pub-v1.0.1--beta.2-blue)
+![Version](https://img.shields.io/badge/pub-v1.0.0--beta.2-blue)
 ![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-blue)
 
 A Flutter plugin for cross-platform step tracking with background support.
