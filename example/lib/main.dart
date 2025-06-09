@@ -9,8 +9,29 @@ void main() async {
   // Initialize the StepTrackerPlugin with configuration
   await StepLogger.initialize(
     config: const StepLoggerConfig(
+      androidNotificationIcon: 'ic_notification', // For foreground notification
+      /* 
+        To change notification icon on Android for bg service, 
+        just add drawable icon with name ic_bg_service_small.
+
+        ## Create notification icon
+        Open Android Studio> In the Project window, select the Android view> 
+        Right-click the res folder and select New > Image Asset > Set 'Notification Icon' as icon type>
+        Name it 'ic_bg_service_small' and save it.
+
+        
+        WARNING:
+        Please make sure your project already use the version of gradle tools below:
+
+        in android/build.gradle classpath 'com.android.tools.build:gradle:7.4.2'
+        in android/build.gradle ext.kotlin_version = '1.8.10'
+        in android/gradle/wrapper/gradle-wrapper.properties distributionUrl=https\://services.gradle.org/distributions/gradle-7.5-all.zip
+              
+        Please refer: https://pub.dev/packages/flutter_background_service#android
+       */
+
       enableTrackingNotification:
-          false, // Works for both platforms, but disabling is limited for Android as background service should show notification.
+          true, // Works for both platforms, but disabling is limited for Android as background service should show notification.
       trackingNotificationTitle: 'My Example Step Tracker',
       trackingNotificationContent: 'Tracking your steps in the background',
       // Note: All notifications can be removed in Android 14+ by the user

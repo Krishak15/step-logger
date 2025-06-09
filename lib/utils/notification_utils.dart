@@ -12,7 +12,7 @@ class NotificationUtils {
     try {
       AndroidInitializationSettings initializationSettingsAndroid =
           AndroidInitializationSettings(
-              androidNotificationIcon ?? '@mipmap/ic_launcher');
+              androidNotificationIcon ?? 'ic_notification');
 
       await _notifications.initialize(
         InitializationSettings(android: initializationSettingsAndroid),
