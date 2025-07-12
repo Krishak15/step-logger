@@ -7,6 +7,7 @@ import 'package:pedometer/pedometer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:step_logger/models/step_logger_config.dart';
 
+@pragma('vm:entry-point')
 class BackgroundService {
   static final _service = FlutterBackgroundService();
 

@@ -41,3 +41,10 @@
 ## 1.0.0-beta.3
 
 - include guide to change tracking notification icon
+
+## 1.0.0-beta.4
+
+### Fixed
+
+- Fixed background service failure on Flutter SDK 3.29.0 or above.
+    
